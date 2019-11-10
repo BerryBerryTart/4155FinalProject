@@ -7,6 +7,7 @@ from rest_framework import status
 from wifi.models import AccessPoint, TimeSlice
 from wifi.serializers import APSerializer, TimeSliceSerializer
 
+
 # Create your views here.
 """Gets the latest access point count"""
 class CurrAPList(APIView):
@@ -23,7 +24,7 @@ class TimeSlices(APIView):
         serializer = TimeSliceSerializer(slices, many=True)
         return Response(serializer.data)
 
-    """View All SLices"""
+    """Add New Slice"""
     def post(self, request, format=None):
         serializer = TimeSliceSerializer(data=request.data)
         if serializer.is_valid():
@@ -31,7 +32,18 @@ class TimeSlices(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-class ImportAPs(APIView):
-    def post():
-        pass
+class APDetailView(APIView):
+    def get(self, request, timeid, format=None):
+        aps = AccessPoint.objects.all().filter(timeid=timeid)
+        serializer = APSerializer(aps, many=True)
+        return Response(serializer.data)
+
+class APBulkView(APIView):
+    def post(self, request, format=None):
+        serializer = APSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
