@@ -12,7 +12,7 @@ from wifi.serializers import APSerializer, TimeSliceSerializer
 """Gets the latest access point count"""
 class CurrAPList(APIView):
     def get(self, request, format=None):
-        latest_time_slice = TimeSlice.objects.order_by('datetime')[0]
+        latest_time_slice = TimeSlice.objects.order_by('-datetime')[0]
         serializer = TimeSliceSerializer(latest_time_slice)
         return Response(serializer.data)
 
@@ -32,18 +32,17 @@ class TimeSlices(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-class APDetailView(APIView):
-    def get(self, request, timeid, format=None):
-        aps = AccessPoint.objects.all().filter(timeid=timeid)
-        serializer = APSerializer(aps, many=True)
+class DetailView(APIView):
+    def get(self, request, pk, format=None):
+        slice = TimeSlice.objects.all().filter(pk=pk)
+        serializer = TimeSliceSerializer(slice)
         return Response(serializer.data)
 
-class APBulkView(APIView):
+class APSingleImportView(APIView):
     def post(self, request, format=None):
         serializer = APSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
 
