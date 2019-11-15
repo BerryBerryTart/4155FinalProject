@@ -1,7 +1,7 @@
 <template>
 <div id="test">
   <b-row>
-    <b-col col="4">
+    <b-col cols="4">
       <div id="highTrafficNav">
        <b-img thumbnail fluid src="./assets/WifiLogo.png"></b-img>
        <b-card header="High Traffic Areas">
@@ -13,17 +13,17 @@
        </b-card>
       </div>
     </b-col>
-    <b-col col="8">
-  <b-nav align="center" fill="True" pills="True">
-    <b-nav-item >Home</b-nav-item>
-    <b-nav-item active>Live Map </b-nav-item>
-    <b-nav-item>Hot Spots</b-nav-item>
-    <b-nav-item>FAQ</b-nav-item>
-    <b-nav-item>Contact</b-nav-item>
+    <b-col cols="8">
+      <b-nav align="center" fill="True" pills="True">
+        <b-nav-item to="/" >Home</b-nav-item>
+        <b-nav-item active>Live Map </b-nav-item>
+        <b-nav-item to="/hotspots">Hot Spots</b-nav-item>
+        <b-nav-item>FAQ</b-nav-item>
+        <b-nav-item>Contact</b-nav-item>
 
-  </b-nav>
-  
-<Map />
+  </b-nav>  
+ 
+  <router-view :hotspotList='aps' :mapData='aps'/>
     </b-col>
  </b-row> 
 </div>
@@ -32,9 +32,9 @@
 <script>
 
 //import dataset from './dataset.json'
-import convertcsv from './convertcsv.json'
+import axios from 'axios'
 import * as d3 from 'd3'
-import Map from './components/map'
+
 
 var margin = { top: 10, right: 30, bottom: 30, left: 40},
    width = 460 - margin.left - margin.right,
@@ -44,7 +44,25 @@ var margin = { top: 10, right: 30, bottom: 30, left: 40},
 export default {
   name: 'app',
   components:{
-    Map
+  },
+  data(){
+    return{
+      aps:[]
+    }
+  },
+  methods:{
+
+    getData(){
+      const url = 'http://127.0.0.1:8000/aps/'
+      axios.get(url)
+      .then(res => this.aps = res.data.aps)
+      .catch(err => console.log(err))
+    }
+
+  },
+  beforeMount(){
+    this.getData()
+
   }
  
   

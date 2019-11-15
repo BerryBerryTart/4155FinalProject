@@ -32,7 +32,7 @@
 <script>
 
 //import dataset from './dataset.json'
-import convertcsv from '../convertcsv.json'
+
 import * as d3 from 'd3'
 
 var margin = { top: 10, right: 30, bottom: 30, left: 40},
@@ -42,34 +42,49 @@ var margin = { top: 10, right: 30, bottom: 30, left: 40},
 
 export default {
   name: 'map',
+  props:['mapData'],
   data(){
     return{
      //dataset
       margin : { top: 10, right: 30, bottom: 30, left: 40},
       width: 660,
       height: 600,
-      dataset:[],
+      dataset: this.mapData,
       
       
     };
   },
   methods:{
-    
+    convertXCoord(building){
+      switch(building){
+       case "Atki": return 12.6;
+        case "Colv": return 13.8;
+      }
+    },
+
+    convertYCoord(building){
+      switch(building){
+       case "Atki": return 9.4;
+        case "Colv": return 10.8;
+      }
+    }
 
   },
   mounted(){
     
     
           // read data
-var data = convertcsv
+var data = this.dataset
  var svg = d3.select('#svg')
   // Add X axis
-  console.log(data)
+ data = data.aps
   
+  console.log(data)
   var x = d3.scaleLinear()
     .domain([5, 15])
     .range([ margin.left, (width) - margin.right ]);
  
+  
 
   // Add Y axis
   var y = d3.scaleLinear()
@@ -79,18 +94,24 @@ var data = convertcsv
 
   // Prepare a color palette
   var color = d3.scaleLinear()
-      .domain([0, .05]) // Points per square pixel.
+      .domain([0, .01]) // Points per square pixel.
       .range(["#ffffff45", "#69b3a215"])
 
   // compute the density data
-  
-   var densityData = d3.contourDensity()
-    .x(function(d) { return x(d.x ); })
-    .y(function(d) { return y(d.y ); })
+
+  var densityData
+   data.forEach(element => {
+     var xCoord = this.convertXCoord(element.building)
+     var yCoord = this.convertYCoord(element.building)
+
+     densityData = d3.contourDensity()
+    .x(function(d) { return x(xCoord); })
+    .y(function(d) { return y(yCoord) ; })
+    .weight(element.count)
     .size([width, height])
-    .bandwidth(20)(data)
-    
-    svg.insert("g", "g")
+    .bandwidth(15)(data)
+
+     svg.insert("g", "g")
     .selectAll("path")
     .data(densityData)
     .enter().append("path")
@@ -98,6 +119,13 @@ var data = convertcsv
       .attr("fill", function(d) { return color(d.value); })
 
     console.log(densityData)
+   });
+   
+
+   
+    
+
+  
 
   // show the shape!
  
