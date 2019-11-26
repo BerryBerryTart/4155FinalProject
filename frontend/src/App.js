@@ -7,7 +7,7 @@ import HeatMap from './components/HeatMap'
 import './App.css'
 import SideBar from './components/layout/SideBar'
 import HotspotPage from './components/pages/HotspotPage'
-
+import axios from 'axios'
 
 const applicationTheme = createMuiTheme({
   palette:{
@@ -31,6 +31,13 @@ export default class App extends Component {
           zoom: 15
         }
     }
+/*
+    componentWillMount(){
+      axios.get('http://127.0.0.1:8000/timeslices/')
+      .then(res => )
+
+    }
+    */
 
   render() {
     return (
