@@ -10,7 +10,7 @@ def main():
 
 
 
-    with open('wifiData.json', 'r') as targetJson:
+    with open('2019-08-16--09-00-00.json', 'r') as targetJson:
 
         r = requests.post(url=url , data=targetJson, headers=headers)
 

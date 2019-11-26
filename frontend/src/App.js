@@ -62,7 +62,7 @@ export default class App extends Component {
                   <HeatMap center={this.state.center} zoom={this.state.zoom}/>
           </React.Fragment>
         )}/>
-        <Route path="/hotspots" component={HotspotPage}/>
+        <Route exact path="/hotspots" component={HotspotPage}/>
         
         </Grid>
         </Grid>
