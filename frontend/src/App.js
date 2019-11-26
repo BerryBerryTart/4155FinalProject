@@ -18,29 +18,26 @@ const applicationTheme = createMuiTheme({
       main:'#B3A369'
     }
   }
-
 })
 
-
-
 export default class App extends Component {
-  state = {
-    center: {
-      lat: 35.3058,
-      lng: -80.7324
-    },
-    zoom: 15
-  }
-
+    constructor(){
+        super();
+        this.state = {
+          center: {
+            lat: 35.3058,
+            lng: -80.7324
+          },
+          zoom: 15
+        }
+    }
 
   render() {
-
-    
     return (
       <Router>
         <ThemeProvider theme={applicationTheme}>
       <div className="App">
-      
+
         <Grid container direction="row" spacing={1} >
            <Grid item xs={2}>
            <SideBar/>
@@ -55,8 +52,8 @@ export default class App extends Component {
               >
                 <Grid item xs>
                   <AppHeader/>
-                </Grid>        
-      
+                </Grid>
+
         <Route exact path="/" render={ props =>(
           <React.Fragment>
                   <HeatMap center={this.state.center} zoom={this.state.zoom}/>
@@ -67,13 +64,10 @@ export default class App extends Component {
         </Grid>
         </Grid>
         </Grid>
-        
-        
-        
+
           </div>
           </ThemeProvider>
           </Router>
     )
   }
 }
-
