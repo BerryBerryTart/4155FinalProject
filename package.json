@@ -9,11 +9,14 @@
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
     "react-router-dom": "^5.1.2",
-    "react-scripts": "3.2.0"
+    "react-scripts": "3.2.0",
+    "url-loader": "^2.3.0"
   },
   "scripts": {
+    "webpack": "webpack",
+    "dev": "npm run webpack -- --mode development ./frontend/src/index.js --output ./frontend/static/frontend/main.js ",
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "npm run webpack -- --mode production ./frontend/src/index.js --output ./frontend/static/frontend/main.js",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
@@ -31,5 +34,17 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@babel/core": "^7.7.4",
+    "@babel/preset-env": "^7.7.4",
+    "@babel/preset-react": "^7.7.4",
+    "babel-loader": "^8.0.6",
+    "babel-plugin-transform-class-properties": "^6.24.1",
+    "css-loader": "^3.2.0",
+    "file-loader": "^5.0.2",
+    "ts-loader": "^6.2.1",
+    "webpack": "^4.41.2",
+    "webpack-cli": "^3.3.10"
   }
 }
