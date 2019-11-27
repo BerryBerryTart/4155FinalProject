@@ -24,6 +24,7 @@ export default class App extends Component {
     constructor(){
         super();
         this.state = {
+          timeslices:[],
           center: {
             lat: 35.3058,
             lng: -80.7324
@@ -31,13 +32,12 @@ export default class App extends Component {
           zoom: 15
         }
     }
-/*
-    componentWillMount(){
-      axios.get('http://127.0.0.1:8000/timeslices/')
-      .then(res => )
 
-    }
-    */
+  componentDidMount(){
+    axios.get('http://localhost:8000/timeslices/')
+    .then(res => this.setState({timeslices: res.data}))
+    .catch(err => console.log(err))
+  }
 
   render() {
     return (
