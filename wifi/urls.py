@@ -6,8 +6,8 @@ from django.views.generic import TemplateView
 urlpatterns = [
     path('aps/', views.CurrAPList.as_view()),
     path('timeslices/', views.TimeSlices.as_view()),
-    path('single-import/', views.APSingleImportView.as_view()),
     path('view/<int:pk>/', views.DetailView.as_view()),
+    path('minslices/', views.MinTimeSliceView.as_view()),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)
