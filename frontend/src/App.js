@@ -7,6 +7,7 @@ import HeatMap from './components/HeatMap'
 import './App.css'
 import SideBar from './components/layout/SideBar'
 import HotspotPage from './components/pages/HotspotPage'
+import About from './components/pages/About'
 
 
 const applicationTheme = createMuiTheme({
@@ -60,7 +61,7 @@ export default class App extends Component {
           </React.Fragment>
         )}/>
         <Route exact path="/hotspots" component={HotspotPage}/>
-        
+        <Route exact path="/about" component={About}/>
         </Grid>
         </Grid>
         </Grid>
