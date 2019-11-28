@@ -8,6 +8,9 @@ import './App.css'
 import SideBar from './components/layout/SideBar'
 import HotspotPage from './components/pages/HotspotPage'
 import axios from 'axios'
+import About from './components/pages/About'
+
+
 
 const applicationTheme = createMuiTheme({
   palette:{
@@ -25,6 +28,7 @@ export default class App extends Component {
         super();
         this.state = {
           timeslices:[],
+          currentPosition:[],
           center: {
             lat: 35.3058,
             lng: -80.7324
@@ -35,13 +39,23 @@ export default class App extends Component {
 
   componentDidMount(){
     axios.get('http://localhost:8000/timeslices/')
-    .then(res => this.setState({timeslices: res.data}))
+    .then(res => this.setState({timeslices: res.data, currentPosition:res.data[0].aps}))
     .catch(err => console.log(err))
+
+    console.log(this.state.currentPosition)
+  }
+
+  convertAPS = () =>{
+    this.setState({currentPosition: this.setState.currentPosition.map(aps => {
+
+    })})
   }
 
   render() {
     return (
+      
       <Router>
+        
         <ThemeProvider theme={applicationTheme}>
       <div className="App">
 
@@ -67,7 +81,7 @@ export default class App extends Component {
           </React.Fragment>
         )}/>
         <Route exact path="/hotspots" component={HotspotPage}/>
-        
+        <Route exact path="/about" component={About}/>
         </Grid>
         </Grid>
         </Grid>

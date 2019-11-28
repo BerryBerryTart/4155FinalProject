@@ -6,8 +6,8 @@ import Tab from '@material-ui/core/Tab';
 
 
  // TypeScript only: need a type cast here because https://github.com/Microsoft/TypeScript/issues/26591
-  
-  
+
+
 
 export default function AppHeader() {
     const [value, setValue] = React.useState(0);
@@ -15,7 +15,7 @@ export default function AppHeader() {
     const handleChange = (event, newValue) => {
       setValue(newValue);
     };
-  
+
     return (
       <Paper elevation={3}>
         <Tabs
@@ -28,7 +28,7 @@ export default function AppHeader() {
           <Tab label="Home" component={Link} to="/"/>
           <Tab label="Hotspot" component={Link} to="/hotspots" />
           <Tab label="FAQ" />
-          <Tab label="About" />
+          <Tab label="About" component={Link} to="/about"/>
         </Tabs>
       </Paper>
     )
