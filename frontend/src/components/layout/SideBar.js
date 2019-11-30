@@ -22,9 +22,10 @@ const useStyles = makeStyles(theme => ({
       marginLeft: '32px'
     },
   }));
-
-export default function SideBar() {
+ 
+export default function SideBar(props) {
     const classes = useStyles()
+    
     return (
         <React.Fragment>
        <Grid
@@ -33,39 +34,28 @@ export default function SideBar() {
             justify="center"
             alignItems="flex-start"
             >
+                
                 <Grid item xs>
                     <Avatar alt="Wifi logo" src={Logo} className={classes.bigAvatar} />
                 </Grid>                    
                 <Grid item xs>
                     <List className={classes.root}  subheader={
                         <ListSubheader component="div" id="nested-list-subheader" color="primary">
-                        High Traffic Buildings
+                        High Traffic Areas
                         </ListSubheader>
                     } >
-                    <ListItem>
-                        <ListItemAvatar>
-                        <Avatar>
-                        <StarIcon color="secondary"/>
-                        </Avatar>
-                        </ListItemAvatar>
-                        <ListItemText primary="Building" secondary="Atkins" />
-                    </ListItem>
-                    <ListItem>
-                        <ListItemAvatar>
-                        <Avatar>
-                        <StarIcon color="secondary"/>
-                        </Avatar>
-                        </ListItemAvatar>
-                        <ListItemText primary="Building" secondary="Kennedy" />
-                    </ListItem>
-                    <ListItem>
-                        <ListItemAvatar>
-                        <Avatar>
-                        <StarIcon color="secondary"/>
-                        </Avatar>
-                        </ListItemAvatar>
-                        <ListItemText primary="Building" secondary="Woodward" />
-                    </ListItem>
+                        {props.highest.map((x)=>(   
+                            <ListItem key={x.id}> 
+                            <ListItemAvatar>
+                            <Avatar>
+                            <StarIcon color="secondary"/>
+                            </Avatar>
+                            </ListItemAvatar>
+                            <ListItemText primary="Building" secondary={x.building} />
+                        </ListItem>
+
+                        ))}
+                    
                     </List>
                     </Grid>
             </Grid>
