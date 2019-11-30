@@ -8,6 +8,8 @@ urlpatterns = [
     path('timeslices/', views.TimeSlices.as_view()),
     path('view/<int:pk>/', views.DetailView.as_view()),
     path('minslices/', views.MinTimeSliceView.as_view()),
+    path('average/', views.MinAPAverageView.as_view()),
+    path('average/<str:ap>/', views.APAverageView.as_view())
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)

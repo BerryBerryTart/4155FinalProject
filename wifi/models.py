@@ -18,3 +18,16 @@ class TimeSlice(models.Model):
     class Meta:
         get_latest_by = '-datetime'
         ordering = ['-datetime']
+
+class AverageByHour(models.Model):
+    id = models.AutoField(primary_key=True)
+    ap_id = models.ForeignKey('AverageByName', on_delete=models.CASCADE, related_name='averages')
+    hour = models.IntegerField()
+    count = models.IntegerField()
+
+    class Meta:
+        ordering = ['hour']
+
+class AverageByName(models.Model):
+    id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=50, unique=True)

@@ -4,8 +4,8 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 
-from wifi.models import AccessPoint, TimeSlice
-from wifi.serializers import APSerializer, TimeSliceSerializer, MinTimeSliceSerializer
+from wifi.models import AccessPoint, TimeSlice, AverageByHour, AverageByName
+from wifi.serializers import APSerializer, TimeSliceSerializer, MinTimeSliceSerializer, AverageByHourSerializer, AverageByNameSerializer, MinAverageByNameSerializer
 
 
 # Create your views here.
@@ -18,7 +18,6 @@ class CurrAPList(APIView):
             return Response(serializer.data)
         except IndexError:
             return Response(status=status.HTTP_400_BAD_REQUEST)
-
 
 """Manages Time Segements (slices)"""
 class TimeSlices(APIView):
@@ -58,3 +57,33 @@ class MinTimeSliceView(APIView):
         slices = TimeSlice.objects.all()
         serializer = MinTimeSliceSerializer(slices, many=True)
         return Response(serializer.data)
+
+class APAverageView(APIView):
+    def get_object(self, ap):
+        try:
+            return AverageByName.objects.get(name=ap)
+        except AverageByName.DoesNotExist:
+            raise Http404
+
+    def get(self, request, ap, format=None):
+        point = self.get_object(ap)
+        serializer = AverageByNameSerializer(point)
+        return Response(serializer.data)
+
+    def delete(self, request, ap, format=None):
+        point = self.get_object(ap)
+        point.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+class MinAPAverageView(APIView):
+    def get(self, request, format=None):
+        point = AverageByName.objects.all()
+        serializer = MinAverageByNameSerializer(point, many=True)
+        return Response(serializer.data)
+
+    def post(self, request, format=None):
+        serializer = AverageByNameSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
