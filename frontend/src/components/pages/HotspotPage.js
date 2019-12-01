@@ -16,42 +16,36 @@ const useStyles = makeStyles(theme => ({
     },
   }));
 
-export default function HotspotPage() {
+export default function HotspotPage(props) {
     const classes = useStyles();
     return (
         <React.Fragment>
             <h2 style={{color: "#B3A369" }}> HotSpots </h2>
             <div className={classes.root}>
-                <ExpansionPanel>
-                    <ExpansionPanelSummary
-                    expandIcon={<ExpandMoreIcon />}
-                    aria-controls="panel1a-content"
-                    id="panel1a-header"
-                    >
-                    <Typography className={classes.heading} color='primary'> Atkins </Typography>
-                    </ExpansionPanelSummary>
-                    <ExpansionPanelDetails>
-                    <Typography>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex,
-                        sit amet blandit leo lobortis eget.
-                    </Typography>
-                    </ExpansionPanelDetails>
-                </ExpansionPanel>
-                <ExpansionPanel>
-                    <ExpansionPanelSummary
-                    expandIcon={<ExpandMoreIcon />}
-                    aria-controls="panel2a-content"
-                    id="panel2a-header"
-                    >
-                    <Typography className={classes.heading} color='primary'>Burson</Typography>
-                    </ExpansionPanelSummary>
-                    <ExpansionPanelDetails>
-                    <Typography>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex,
-                        sit amet blandit leo lobortis eget.
-                    </Typography>
-                    </ExpansionPanelDetails>
-                </ExpansionPanel>
+                {props.listOfAPS.map(x => (
+
+                            <ExpansionPanel key={x.id}>
+                            <ExpansionPanelSummary
+                            expandIcon={<ExpandMoreIcon />}
+                            aria-controls="panel1a-content"
+                            id="panel1a-header"
+                            >
+                            <Typography className={classes.heading} color='primary'> {x.building} </Typography>
+                            </ExpansionPanelSummary>
+                            <ExpansionPanelDetails>
+                            <Typography>
+                                {x.name + " Traffic Percentage: " + x.count + " out of a toal of " + props.total + " Access point pings" }
+                            </Typography>
+                            </ExpansionPanelDetails>
+                            </ExpansionPanel>
+
+
+
+
+
+                ))}
+                
+                
     </div>
         </React.Fragment>
     )

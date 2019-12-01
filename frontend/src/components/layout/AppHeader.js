@@ -27,7 +27,7 @@ export default function AppHeader() {
         >
           <Tab label="Home" component={Link} to="/"/>
           <Tab label="Hotspot" component={Link} to="/hotspots" />
-          <Tab label="FAQ" />
+          <Tab label="FAQ" component={Link} to="/FAQ" />
           <Tab label="About" component={Link} to="/about"/>
         </Tabs>
       </Paper>

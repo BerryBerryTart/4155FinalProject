@@ -51,7 +51,7 @@ export default function SideBar(props) {
                             <StarIcon color="secondary"/>
                             </Avatar>
                             </ListItemAvatar>
-                            <ListItemText primary="Building" secondary={x.building} />
+                            <ListItemText primary={"Building: " + x.building} secondary={"Access Point:" + x.name} />
                         </ListItem>
 
                         ))}

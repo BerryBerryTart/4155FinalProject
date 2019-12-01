@@ -1,7 +1,9 @@
 import React from 'react'
 import GoogleMapReact from 'google-map-react'
 
-
+const thing = function(){
+  console.log("test")
+}
 
 
 export default function HeatMap(props) {
@@ -17,12 +19,13 @@ export default function HeatMap(props) {
           radius: 45,
           opacity: 0.5
       }
-    } 
+    } ;
 
+    const printStuff = thing()
    
     return (
         <div style={{ height: '50vh', width: '80%', }}>
-        
+        {printStuff}
         <GoogleMapReact
           bootstrapURLKeys={{ key: 'AIzaSyB4kik_cwF06H7lBAYNTCbQU4ERUdpeHPo' }}
           defaultCenter={props.center}

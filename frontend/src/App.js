@@ -9,6 +9,7 @@ import SideBar from './components/layout/SideBar'
 import HotspotPage from './components/pages/HotspotPage'
 import axios from 'axios'
 import About from './components/pages/About'
+import FAQ from './components/pages/FAQ'
 
 
 
@@ -29,9 +30,11 @@ export default class App extends Component {
         super(props);
         this.state = {
           timeslices:[],
-          currentPosition:[], //APS
+          APS:[], //APS
+          currentPosition:[], //Most current postions 
           newPosition:[],  //Latt on Long of APS's
           HTB:[],   //High Traffic Buildings 
+          totalCount:0,
           center: {
             lat: 35.3058,
             lng: -80.7324
@@ -42,7 +45,8 @@ export default class App extends Component {
 
   
   convertAPS = () =>{
-    this.setState({newPosition:this.state.currentPosition.map(aps => {
+   // console.log( this.state.APS)
+    this.setState({newPosition:this.state.APS.map(aps => {
       
       
       var newPos
@@ -246,13 +250,18 @@ export default class App extends Component {
           }
           
           return newPos
-        })},  ()=>{
-          console.log(this.state.newPosition)
-        })
+        })})
     
    
     
-        console.log("!!!!!!!!!!!!!!!!!!!!!")
+        
+  }
+  getTotalCount = ()=>{
+    var x = this.state.currentPosition.map(x => {
+      return x.count
+    })
+    var total = x.reduce((accumulator, currentValue) => accumulator + currentValue)
+    this.setState({totalCount: total})
   }
 
   highTraffic = () =>{
@@ -267,10 +276,42 @@ export default class App extends Component {
   }
 
   componentDidMount(){
+   
     axios.get('http://localhost:8000/timeslices/')
     .then(res => this.setState({timeslices: res.data, currentPosition:res.data[0].aps}, ()=> {
-      this.convertAPS() 
+      
+        this.setState({APS:this.state.timeslices[0].aps},()=>{
+          this.state.timeslices.slice().reverse().forEach(x => {
+            console.log(x.aps)
+          })
+          this.convertAPS()
+        })
+        
+        //console.log(this.state.APS)
+        // this.convertAPS()
+        
+        // this.setState({APS:this.state.timeslices[2].aps},()=>{
+        //   setTimeout(this.convertAPS,2500)
+        //   console.log(this.state.APS)
+          
+        //   this.setState({APS:this.state.timeslices[1].aps},()=>{
+        //     console.log(this.state.APS)
+        //     //setTimeout(this.convertAPS,2000)
+        //     this.setState({APS:this.state.timeslices[0].aps},()=>{
+        //       console.log(this.state.APS)
+        //      // setTimeout(this.convertAPS,10000)
+        //     })
+           
+        //   })
+         
+        // })
+        
+      
+    
+      
+      
       this.highTraffic()
+      this.getTotalCount()
     }))
     .catch(err => console.log(err))
     
@@ -310,8 +351,9 @@ export default class App extends Component {
                   
           </React.Fragment>
         )}/>
-        <Route exact path="/hotspots" component={HotspotPage}/>
+        <Route exact path="/hotspots" render={props => <HotspotPage listOfAPS={this.state.currentPosition} total={this.state.totalCount}/>}/>
         <Route exact path="/about" component={About}/>
+        <Route exact path="/FAQ" component={FAQ}/>
         </Grid>
         </Grid>
         </Grid>
