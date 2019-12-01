@@ -280,11 +280,12 @@ export default class App extends Component {
     axios.get('http://localhost:8000/timeslices/')
     .then(res => this.setState({timeslices: res.data, currentPosition:res.data[0].aps}, ()=> {
       
-        this.setState({APS:this.state.timeslices[0].aps},()=>{
-          this.state.timeslices.slice().reverse().forEach(x => {
-            console.log(x.aps)
-          })
+        this.setState({APS:this.state.timeslices[1].aps},()=>{
+        
           this.convertAPS()
+          this.setState({APS:this.state.timeslices[0].aps},()=>{
+            setTimeout(this.convertAPS,3000)
+          })
         })
         
         //console.log(this.state.APS)
