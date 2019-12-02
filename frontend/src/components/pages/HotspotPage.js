@@ -120,7 +120,7 @@ const BUILDINGMAP = {
     "Stor": "Storrs",
     "StorCOR": "Storrs",
     "Storr": "Storrs",
-    "StuA": "Student Activitis Center",
+    "StuA": "Student Activities Center",
     "StuH": "Student Health Center",
     "StuU": "Student Union",
     "SVDH": "South Village Dining Hall",

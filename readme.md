@@ -1,6 +1,6 @@
 # 4155 WiFi Activity Capstone Project
 
-Created with Django and Vue.js
+Created with Django and React.js
 
 ### Requirements
 - Python3
