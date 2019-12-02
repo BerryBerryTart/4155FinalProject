@@ -9,12 +9,13 @@ import Tab from '@material-ui/core/Tab';
 
 
 
-export default function AppHeader() {
+export default function AppHeader({handleHeatmapClick, handleAwayClick}) {
     const [value, setValue] = React.useState(0);
 
     const handleChange = (event, newValue) => {
       setValue(newValue);
     };
+
 
     return (
       <Paper elevation={3}>
@@ -25,10 +26,10 @@ export default function AppHeader() {
           textColor="primary"
           centered
         >
-          <Tab label="Home" component={Link} to="/"/>
-          <Tab label="Hotspot" component={Link} to="/hotspots" />
-          <Tab label="FAQ" component={Link} to="/FAQ" />
-          <Tab label="About" component={Link} to="/about"/>
+          <Tab label="Home" component={Link} to="/" onClick={handleHeatmapClick}/>
+          <Tab label="Hotspot" component={Link} to="/hotspots" onClick={handleAwayClick}/>
+          <Tab label="FAQ" component={Link} to="/FAQ" onClick={handleAwayClick}/>
+          <Tab label="About" component={Link} to="/about" onClick={handleAwayClick}/>
         </Tabs>
       </Paper>
     )

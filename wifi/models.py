@@ -17,7 +17,7 @@ class TimeSlice(models.Model):
 
     class Meta:
         get_latest_by = '-datetime'
-        ordering = ['-datetime']
+        ordering = ['datetime']
 
 class AverageByHour(models.Model):
     id = models.AutoField(primary_key=True)

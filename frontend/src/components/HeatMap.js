@@ -19,8 +19,8 @@ export default function HeatMap(props) {
     } ;
     const [completed, setCompleted] = React.useState(0);
     const [buffer, setBuffer] = React.useState(10);
-     
-    // for progress bar 
+
+    // for progress bar
     const progress = React.useRef(() => {});
     React.useEffect(() => {
       progress.current = () => {
@@ -35,13 +35,13 @@ export default function HeatMap(props) {
         }
       };
     });
-  
+
     React.useEffect(() => {
       function tick() {
         progress.current();
       }
       const timer = setInterval(tick, 500);
-  
+
       return () => {
         clearInterval(timer);
       };

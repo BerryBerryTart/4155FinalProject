@@ -41,6 +41,8 @@ export default class App extends Component {
           },
           zoom: 15
         }
+        this.handleHeatmapClick = this.handleHeatmapClick.bind(this);
+        this.handleAwayClick = this.handleAwayClick.bind(this);
     }
 
 
@@ -340,6 +342,20 @@ timer() {
     .catch(err => console.log(err));
 }
 
+    handleHeatmapClick() {
+        if(!this.state.refreshTimer){
+            var refreshTimer = setInterval(this.timer.bind(this), 1500);
+            //Store in state to be used later
+            this.setState({refreshTimer: refreshTimer});
+        }
+    }
+
+    handleAwayClick(){
+        clearInterval(this.state.refreshTimer);
+        this.setState({
+            refreshTimer: null
+        })
+    }
 
   render() {
     return (
@@ -362,7 +378,10 @@ timer() {
                 spacing={4}
               >
                 <Grid item xs>
-                  <AppHeader/>
+                  <AppHeader
+                    handleHeatmapClick={this.handleHeatmapClick}
+                    handleAwayClick={this.handleAwayClick}
+                  />
                 </Grid>
 
         <Route exact path="/" render={ props =>(
