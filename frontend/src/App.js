@@ -30,6 +30,7 @@ export default class App extends Component {
           currTimeSliceIndex: 0,
           refreshTimer: null,
           APS:[], //APS
+          apsTime:'',
           currentPosition:[], //Most current postions
           newPosition:[],  //Latt on Long of APS's
           HTB:[],   //High Traffic Buildings
@@ -276,7 +277,8 @@ componentDidMount(){
     axios.get('http://localhost:8000/aps/')
     .then(res => this.setState({
                 APS: res.data.aps,
-                currentPosition:res.data.aps
+                currentPosition:res.data.aps,
+                apsTime:res.data.datetime
             }))
     .then(
         ()=> {this.setState(()=>{this.convertAPS();})
@@ -321,7 +323,8 @@ timer() {
     axios.get('http://localhost:8000/view/' + this.state.timeslices[this.state.currTimeSliceIndex].id + '/')
     .then(res => this.setState({
                 APS: res.data.aps,
-                currentPosition:res.data.aps
+                currentPosition:res.data.aps,
+                apsTime:res.data.datetime
             }))
     .then(
         ()=> {this.setState(()=>{this.convertAPS();})
@@ -364,7 +367,7 @@ timer() {
 
         <Route exact path="/" render={ props =>(
           <React.Fragment>
-                  <HeatMap center={this.state.center} zoom={this.state.zoom} positions={this.state.newPosition}/>
+                  <HeatMap center={this.state.center} zoom={this.state.zoom} positions={this.state.newPosition} time={this.state.apsTime.substring(11)}/>
 
           </React.Fragment>
         )}/>
