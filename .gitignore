@@ -9,3 +9,4 @@ npm-debug.log
 yarn-error.log
 static/js
 migrations/
+frontend/static/frontend/main.js
