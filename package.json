@@ -15,9 +15,9 @@
   },
   "scripts": {
     "webpack": "webpack",
-    "dev": "npm run webpack -- --mode development --watch ./frontend/src/index.js --output ./frontend/static/frontend/main.js ",
+    "dev": "webpack --mode development --watch ./frontend/src/index.js --output ./frontend/static/frontend/main.js ",
     "start": "react-scripts start",
-    "build": "npm run webpack -- --mode production ./frontend/src/index.js --output ./frontend/static/frontend/main.js",
+    "build": "webpack --mode production ./frontend/src/index.js --output ./frontend/static/frontend/main.js",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
