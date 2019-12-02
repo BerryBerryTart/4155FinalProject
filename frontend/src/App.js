@@ -10,6 +10,7 @@ import HotspotPage from './components/pages/HotspotPage'
 import axios from 'axios'
 import About from './components/pages/About'
 import FAQ from './components/pages/FAQ'
+import Controls from './components/Controls/Controls'
 
 const applicationTheme = createMuiTheme({
   palette:{
@@ -342,20 +343,20 @@ timer() {
     .catch(err => console.log(err));
 }
 
-    handleHeatmapClick() {
-        if(!this.state.refreshTimer){
-            var refreshTimer = setInterval(this.timer.bind(this), 1500);
-            //Store in state to be used later
-            this.setState({refreshTimer: refreshTimer});
-        }
+handleHeatmapClick() {
+    if(!this.state.refreshTimer){
+        var refreshTimer = setInterval(this.timer.bind(this), 1500);
+        //Store in state to be used later
+        this.setState({refreshTimer: refreshTimer});
     }
+}
 
-    handleAwayClick(){
-        clearInterval(this.state.refreshTimer);
-        this.setState({
-            refreshTimer: null
-        })
-    }
+handleAwayClick(){
+    clearInterval(this.state.refreshTimer);
+    this.setState({
+        refreshTimer: null
+    })
+}
 
   render() {
     return (
@@ -399,7 +400,9 @@ timer() {
 
           </div>
           </ThemeProvider>
+          <Controls handleAwayClick={this.handleAwayClick}/>
           </Router>
+
     )
   }
 }

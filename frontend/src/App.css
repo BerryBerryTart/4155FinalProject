@@ -31,5 +31,10 @@
 
 .bar{
   height: 10vh;
+}
 
+.buttonControls {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
 }
