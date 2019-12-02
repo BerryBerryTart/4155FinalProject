@@ -28,8 +28,8 @@ export default function HeatMap(props) {
           setCompleted(0);
           setBuffer(10);
         } else {
-          const diff = Math.random() * 20;
-          const diff2 = Math.random() * 30;
+          const diff = Math.random() * 15;
+          const diff2 = Math.random() * 35;
           setCompleted(completed + diff);
           setBuffer(completed + diff + diff2);
         }
