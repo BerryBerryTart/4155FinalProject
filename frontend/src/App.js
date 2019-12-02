@@ -297,7 +297,7 @@ componentDidMount(){
     .then(
         //function to setup demo refresh timer
         () => {
-            var refreshTimer = setInterval(this.timer.bind(this), 3000);
+            var refreshTimer = setInterval(this.timer.bind(this), 1500);
             //Store in state to be used later
             this.setState({refreshTimer: refreshTimer});
         }
