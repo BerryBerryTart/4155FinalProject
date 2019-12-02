@@ -11,9 +11,6 @@ import axios from 'axios'
 import About from './components/pages/About'
 import FAQ from './components/pages/FAQ'
 
-
-
-
 const applicationTheme = createMuiTheme({
   palette:{
     primary:{
@@ -30,10 +27,12 @@ export default class App extends Component {
         super(props);
         this.state = {
           timeslices:[],
+          currTimeSliceIndex: 0,
+          refreshTimer: null,
           APS:[], //APS
-          currentPosition:[], //Most current postions 
+          currentPosition:[], //Most current postions
           newPosition:[],  //Latt on Long of APS's
-          HTB:[],   //High Traffic Buildings 
+          HTB:[],   //High Traffic Buildings
           totalCount:0,
           center: {
             lat: 35.3058,
@@ -43,14 +42,12 @@ export default class App extends Component {
         }
     }
 
-  
+
   convertAPS = () =>{
    // console.log( this.state.APS)
     this.setState({newPosition:this.state.APS.map(aps => {
-      
-      
-      var newPos
-       
+      var newPos;
+
       switch(aps.building){
             case 'Atki':
               newPos = { lat: 35.30576 , lng: -80.73243 , weight: aps.count}
@@ -248,14 +245,12 @@ export default class App extends Component {
                 newPos = { lat: 35.30627 , lng: -80.73002, weight: aps.count}
                 break;
           }
-          
-          return newPos
+
+          return newPos;
         })})
-    
-   
-    
-        
+
   }
+
   getTotalCount = ()=>{
     var x = this.state.currentPosition.map(x => {
       return x.count
@@ -275,58 +270,79 @@ export default class App extends Component {
     this.setState({HTB: newH})
   }
 
-  componentDidMount(){
-   
-    axios.get('http://localhost:8000/timeslices/')
-    .then(res => this.setState({timeslices: res.data, currentPosition:res.data[0].aps}, ()=> {
-      
-        this.setState({APS:this.state.timeslices[1].aps},()=>{
-        
-          this.convertAPS()
-          this.setState({APS:this.state.timeslices[0].aps},()=>{
-            setTimeout(this.convertAPS,3000)
-          })
+componentDidMount(){
+
+    //Get initial Data
+    axios.get('http://localhost:8000/aps/')
+    .then(res => this.setState({
+                APS: res.data.aps,
+                currentPosition:res.data.aps
+            }))
+    .then(
+        ()=> {this.setState(()=>{this.convertAPS();})
+            this.highTraffic()
+            this.getTotalCount()
+        }
+    )
+    .then(
+        //function to seed timeslice array
+        () => {
+            axios.get('http://localhost:8000/minslices/')
+            .then(res => this.setState({
+                timeslices: res.data
+            }))
+            .catch(err => console.log(err));
+        }
+    )
+    .then(
+        //function to setup demo refresh timer
+        () => {
+            var refreshTimer = setInterval(this.timer.bind(this), 3000);
+            //Store in state to be used later
+            this.setState({refreshTimer: refreshTimer});
+        }
+    )
+    .catch(err => console.log(err));
+
+}
+
+componentWillUnmount() {
+    clearInterval(this.state.refreshTimer);
+}
+
+timer() {
+    let MAX_ARRAY_INDEX = this.state.timeslices.length - 1;
+    if (this.state.currTimeSliceIndex > MAX_ARRAY_INDEX){
+        this.setState({
+            currTimeSliceIndex: 0
         })
-        
-        //console.log(this.state.APS)
-        // this.convertAPS()
-        
-        // this.setState({APS:this.state.timeslices[2].aps},()=>{
-        //   setTimeout(this.convertAPS,2500)
-        //   console.log(this.state.APS)
-          
-        //   this.setState({APS:this.state.timeslices[1].aps},()=>{
-        //     console.log(this.state.APS)
-        //     //setTimeout(this.convertAPS,2000)
-        //     this.setState({APS:this.state.timeslices[0].aps},()=>{
-        //       console.log(this.state.APS)
-        //      // setTimeout(this.convertAPS,10000)
-        //     })
-           
-        //   })
-         
-        // })
-        
-      
-    
-      
-      
-      this.highTraffic()
-      this.getTotalCount()
-    }))
-    .catch(err => console.log(err))
-    
-    
-  }
+    }
+    //refresh fetch
+    axios.get('http://localhost:8000/view/' + this.state.timeslices[this.state.currTimeSliceIndex].id + '/')
+    .then(res => this.setState({
+                APS: res.data.aps,
+                currentPosition:res.data.aps
+            }))
+    .then(
+        ()=> {this.setState(()=>{this.convertAPS();})
+            this.highTraffic()
+            this.getTotalCount()
+        }
+    )
+    .then(
+        this.setState({
+            currTimeSliceIndex: this.state.currTimeSliceIndex + 1
+        })
+    )
+    .catch(err => console.log(err));
+}
 
-
- 
 
   render() {
     return (
-      
+
       <Router>
-        
+
         <ThemeProvider theme={applicationTheme}>
       <div className="App">
 
@@ -349,7 +365,7 @@ export default class App extends Component {
         <Route exact path="/" render={ props =>(
           <React.Fragment>
                   <HeatMap center={this.state.center} zoom={this.state.zoom} positions={this.state.newPosition}/>
-                  
+
           </React.Fragment>
         )}/>
         <Route exact path="/hotspots" render={props => <HotspotPage listOfAPS={this.state.currentPosition} total={this.state.totalCount}/>}/>
