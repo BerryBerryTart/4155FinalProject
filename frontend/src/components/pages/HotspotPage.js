@@ -5,7 +5,7 @@ import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import groupBy from 'lodash/groupBy'
+import groupBy from 'lodash/groupBy';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -15,18 +15,26 @@ const useStyles = makeStyles(theme => ({
       fontSize: theme.typography.pxToRem(15),
       fontWeight: theme.typography.fontWeightRegular,
     },
+    expansonSum:{
+        display:'inline-block',
+        //borderBottom:'2px black solid'
+    }
   }));
 
 export default function HotspotPage(props) {
+    
+
     const classes = useStyles();
     var apList = props.listOfAPS;
     apList.forEach((item) => {if (item.building in BUILDINGMAP) item.building = BUILDINGMAP[item.building]})
     const groupedList = groupBy(apList, 'building');
     return (
         <React.Fragment>
+           
             <h2 style={{color: "#B3A369" }}> HotSpots </h2>
             <div className={classes.root}>
                 {Object.keys(groupedList).map((key) => (
+                   
                     <ExpansionPanel key={key}>
                     <ExpansionPanelSummary
                         expandIcon={<ExpandMoreIcon />}
@@ -38,19 +46,23 @@ export default function HotspotPage(props) {
                     <ExpansionPanelDetails>
                         <ul style={{listStyleType: "none"}}>
                         {groupedList[key].map(ap => (
-                            <li key={ap.id}>
-                                <Typography align={'left'}>
-                                {"AP Name: " + ap.name}
+                           
+                            <li key={ap.id} style={{textAlign:'left', margin:'0px 8px'}} className={classes.expansonSum}>
+                                <Typography  >
+                                {"AP Name: " + ap.name + " "}
                                 </Typography>
-                                <Typography align={'right'}>
-                                {"Current Connected Users: " + ap.count}
+                             <Typography color='primary' style={{margin:'0px 5px'}} >
+                                {" Current Connected Users: " + ap.count}
                                 </Typography>
                                 <br />
+                                <hr/>
                             </li>
+                           
                         ))}
                         </ul>
                     </ExpansionPanelDetails>
                     </ExpansionPanel>
+                    
                 ))}
             </div>
         </React.Fragment>
