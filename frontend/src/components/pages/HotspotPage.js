@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState} from 'react'
 import { makeStyles } from '@material-ui/core/styles';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
@@ -6,6 +6,8 @@ import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import groupBy from 'lodash/groupBy';
+import BarGraph from '../BarGraph/BarGraph';
+
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -18,11 +20,18 @@ const useStyles = makeStyles(theme => ({
     expansonSum:{
         display:'inline-block',
         //borderBottom:'2px black solid'
+    },
+    averageExpansion:{
+        padding: '5px',
     }
   }));
 
 export default function HotspotPage(props) {
-    
+    const [currAP, setCurrAP] = useState('')
+    const handleOnClick = (eventData) => {
+        setCurrAP(eventData);
+        console.log(currAP);
+    };
 
     const classes = useStyles();
     var apList = props.listOfAPS;
@@ -30,11 +39,11 @@ export default function HotspotPage(props) {
     const groupedList = groupBy(apList, 'building');
     return (
         <React.Fragment>
-           
+
             <h2 style={{color: "#B3A369" }}> HotSpots </h2>
             <div className={classes.root}>
                 {Object.keys(groupedList).map((key) => (
-                   
+
                     <ExpansionPanel key={key}>
                     <ExpansionPanelSummary
                         expandIcon={<ExpandMoreIcon />}
@@ -43,26 +52,41 @@ export default function HotspotPage(props) {
                     >
                     <Typography className={classes.heading} color='primary'> {key} </Typography>
                     </ExpansionPanelSummary>
-                    <ExpansionPanelDetails>
-                        <ul style={{listStyleType: "none"}}>
+                    <ExpansionPanelDetails TransitionProps={{ unmountOnExit: true }}>
+                        <ul style={{listStyleType: "none", padding: '0px'}}>
                         {groupedList[key].map(ap => (
-                           
-                            <li key={ap.id} style={{textAlign:'left', margin:'0px 8px'}} className={classes.expansonSum}>
-                                <Typography  >
-                                {"AP Name: " + ap.name + " "}
+                            <li
+                                key={ap.id}
+                                style={{textAlign:'left', margin:'0px 8px', width: '298px'}}
+                                className={classes.expansonSum}
+                            >
+                                <Typography >
+                                {"AP Name: " + ap.name}
                                 </Typography>
-                             <Typography color='primary' style={{margin:'0px 5px'}} >
-                                {" Current Connected Users: " + ap.count}
+                                <Typography color='primary' style={{margin:'0px 5px'}} >
+                                {"Current Connected Users: " + ap.count}
                                 </Typography>
+                        <ExpansionPanel TransitionProps={{ unmountOnExit: true }}>
+                        <ExpansionPanelSummary
+                            expandIcon={<ExpandMoreIcon />}
+                            aria-controls="panel1a-content"
+                            id="panel1a-header"
+                        >
+                        <Typography className={classes.heading} color='primary'>Average Activity</Typography>
+                        </ExpansionPanelSummary>
+                        <ExpansionPanelDetails className={classes.averageExpansion}>
+                            <BarGraph apName={ap.name}/>
+                        </ExpansionPanelDetails>
+                        </ExpansionPanel>
                                 <br />
                                 <hr/>
                             </li>
-                           
+
                         ))}
                         </ul>
                     </ExpansionPanelDetails>
                     </ExpansionPanel>
-                    
+
                 ))}
             </div>
         </React.Fragment>
