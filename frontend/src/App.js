@@ -11,6 +11,7 @@ import axios from 'axios'
 import About from './components/pages/About'
 import FAQ from './components/pages/FAQ'
 import Controls from './components/Controls/Controls'
+import groupBy from 'lodash/groupBy'
 
 const applicationTheme = createMuiTheme({
   palette:{
@@ -21,7 +22,80 @@ const applicationTheme = createMuiTheme({
       main:'#B3A369'
     }
   }
-})
+});
+const BUILDINGMAP = {
+    "Atki": "Atkins Library",
+    "AtkiG": "Atkins Library",
+    "AtkiL": "Atkins Library",
+    "Band": "Johnson Band Center",
+    "BandCor": "Johnson Band Center",
+    "Barn": "Barnard",
+    "BelG": "Belk Gym",
+    "BelGGym": "Belk Gym",
+    "BelGMain": "Belk Gym",
+    "BelGPool": "Belk Gym",
+    "BelGRB": "Belk Gym",
+    "BelH": "Belk Hall",
+    "Bioi": "Bioinformatics",
+    "BioiVEST": "Bioinformatics",
+    "Burs": "Burson",
+    "BursBOIL": "Burson",
+    "CRI": "CRI",
+    "Came": "Cameron Hall",
+    "Cato": "Cato Hall",
+    "Ceda": "Cedar Hall",
+    "CoEd": "College Of Education",
+    "Colv": "Covald",
+    "Cone": "Cone Center",
+    "Coun": "Price Counseling Center",
+    "Denn": "Denny",
+    "Duke": "Duke Hall",
+    "EPIC": "Epic Building",
+    "EPICG": "Epic Building",
+    "Fret": "Fretwell",
+    "Frid": "Friday",
+    "Gari": "Garinger Building",
+    "Grig": "Grigg Hall",
+    "Heal": "College Of Health And Human Services",
+    "HealCOR": "College Of Health And Human Services",
+    "Hick": "Hickory Hall",
+    "Hous": "Housing and Residence Life",
+    "HunH": "Hunt Hall",
+    "Kenn": "Kennedy",
+    "King": "King",
+    "Laur": "Laurel Hall",
+    "Levi": "Levine Hall",
+    "Lync": "Lynch Hall",
+    "MSII": "Motorsports Research",
+    "Macy": "Macy",
+    "Mart": "Martin Hall",
+    "McEn": "McEniry",
+    "McMi": "McMillan Greenhouse",
+    "Memo": "Memorial Hall",
+    "MilH": "Miltimore Hall",
+    "MiltA": "Miltimore‐Wallis Center",
+    "Moto": "Motorsports Research",
+    "PORT": "PORTAL",
+    "PORTCOR": "PORTAL",
+    "PROS": "Prospector",
+    "Pros": "Prospector",
+    "Rees": "Reese",
+    "Robi": "Robinson Hall",
+    "Rowe": "Rowe",
+    "Smit": "Smith",
+    "Stor": "Storrs",
+    "StorCOR": "Storrs",
+    "Storr": "Storrs",
+    "StuA": "Student Activities Center",
+    "StuH": "Student Health Center",
+    "StuU": "Student Union",
+    "SVDH": "South Village Dining Hall",
+    "Winn": "Winningham",
+    "With": "Witherspoon",
+    "Wood": "Woodward"
+};
+
+
 
 export default class App extends Component {
     constructor(props){
@@ -45,6 +119,8 @@ export default class App extends Component {
         this.handleHeatmapClick = this.handleHeatmapClick.bind(this);
         this.handleAwayClick = this.handleAwayClick.bind(this);
     }
+
+    
 
 
   convertAPS = () =>{
@@ -264,14 +340,36 @@ export default class App extends Component {
   }
 
   highTraffic = () =>{
-    var h = this.state.currentPosition.sort(function(a,b){
-     return  a.count > b.count
+    var finalCountList = []
+    var h = this.state.currentPosition
+    // Change buildings to the correct building name instead of what we have from Aruba OS
+    h.forEach(x =>{
+        if(x.building in BUILDINGMAP)
+        x.building = BUILDINGMAP[x.building]
     })
-    var newH = []
-    for(var i =0; i < 3 ; i++){
-      newH.push(h[i])
+    //Group all the access points by building 
+    var groupedList = groupBy(h, 'building') 
+    for(var key  in groupedList){
+       var t = groupedList[key] //Make a variable to hold each bulding object (this has the counts for each building)
+       var count = 0            // set up intial count 
+       t.forEach(b => {
+           count+=b.count          //iterate through each specific building object and add the counts of each access point we are getting 
+       })
+       var x = {building : key, totalCount: count}  // Create object that has the bulding and the count 
+       finalCountList.push(x)
     }
-    this.setState({HTB: newH})
+    finalCountList = finalCountList.sort(function(a,b){ return  a.totalCount - b.totalCount}) // Sorted from least to greatest because for some reason > was not working in sort idk why
+    finalCountList = finalCountList.slice().reverse() // reverse the order so that the greatest is on top 
+    //console.log(finalCountList)
+    var finalSortedCountList  = [] 
+    
+    for( var j = 0 ; j < 3; j++){
+        finalSortedCountList.push(finalCountList[j])  //Get the 3 greatest buldings 
+    }
+    //console.log(finalSortedCountList)
+    this.setState({HTB:finalSortedCountList}) //save to our state to be passed 
+    
+   
   }
 
 componentDidMount(){

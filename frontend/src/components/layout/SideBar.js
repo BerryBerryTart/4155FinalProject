@@ -41,17 +41,17 @@ export default function SideBar(props) {
                 <Grid item xs>
                     <List className={classes.root}  subheader={
                         <ListSubheader component="div" id="nested-list-subheader" color="primary">
-                        High Traffic Areas
+                        High Traffic Buildings
                         </ListSubheader>
                     } >
                         {props.highest.map((x)=>(   
-                            <ListItem key={x.id}> 
+                            <ListItem key={x.building}> 
                             <ListItemAvatar>
                             <Avatar>
                             <StarIcon color="secondary"/>
                             </Avatar>
                             </ListItemAvatar>
-                            <ListItemText primary={"Building: " + x.building} secondary={"Access Point:" + x.name} />
+                            <ListItemText primary={"Building: " + x.building} secondary={"Total Amount of Pings " + x.totalCount} />
                         </ListItem>
 
                         ))}
