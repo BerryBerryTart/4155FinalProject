@@ -22,10 +22,10 @@ const useStyles = makeStyles(theme => ({
       marginLeft: '32px'
     },
   }));
- 
+
 export default function SideBar(props) {
     const classes = useStyles()
-    
+
     return (
         <React.Fragment>
        <Grid
@@ -34,28 +34,27 @@ export default function SideBar(props) {
             justify="center"
             alignItems="flex-start"
             >
-                
+
                 <Grid item xs>
                     <Avatar alt="Wifi logo" src={Logo} className={classes.bigAvatar} />
-                </Grid>                    
+                </Grid>
                 <Grid item xs>
                     <List className={classes.root}  subheader={
                         <ListSubheader component="div" id="nested-list-subheader" color="primary">
                         High Traffic Buildings
                         </ListSubheader>
                     } >
-                        {props.highest.map((x)=>(   
-                            <ListItem key={x.building}> 
+                        {props.highest.map((x)=>(
+                            <ListItem key={x.building}>
                             <ListItemAvatar>
                             <Avatar>
                             <StarIcon color="secondary"/>
                             </Avatar>
                             </ListItemAvatar>
-                            <ListItemText primary={"Building: " + x.building} secondary={"Total Amount of Pings " + x.totalCount} />
+                            <ListItemText primary={x.building} secondary={"Total Amount of Pings " + x.totalCount} />
                         </ListItem>
-
                         ))}
-                    
+                    <h4 style={{color: "#00703c", textAlign: 'center' }}>{props.time}</h4>
                     </List>
                     </Grid>
             </Grid>
