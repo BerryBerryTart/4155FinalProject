@@ -25,6 +25,7 @@ export default function HeatMap(props) {
             heatmap={heatMapData}
             >
             </GoogleMapReact>
+            
             <h4 style={{color: "#00703c" }}>{props.time}</h4>
         </div>
     )

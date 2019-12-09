@@ -465,7 +465,7 @@ handleAwayClick(){
       <div className="App">
             
         <Grid container direction="row" spacing={1} >
-           <Grid item xs={2}>
+           <Grid item md={2} xs={1}>
            <SideBar highest={this.state.HTB}/>
           </Grid>
           <Grid item md={8}>
@@ -476,7 +476,7 @@ handleAwayClick(){
                 alignItems="center"
                 spacing={4}
               >
-                <Grid item xs>
+                <Grid item xs={10}>
                   <AppHeader
                     handleHeatmapClick={this.handleHeatmapClick}
                     handleAwayClick={this.handleAwayClick}
@@ -485,7 +485,7 @@ handleAwayClick(){
 
         <Route exact path="/" render={ props =>(
           <React.Fragment>
-                  <HeatMap center={this.state.center} zoom={this.state.zoom} positions={this.state.newPosition} time={this.state.apsTime.substring(11,18)}/>
+                  <HeatMap center={this.state.center} zoom={this.state.zoom} positions={this.state.newPosition} time={this.state.apsTime.substring(11,19)}/>
 
           </React.Fragment>
         )}/>
