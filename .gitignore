@@ -10,3 +10,5 @@ yarn-error.log
 static/js
 migrations/
 frontend/static/frontend/main.js
+averages
+data
