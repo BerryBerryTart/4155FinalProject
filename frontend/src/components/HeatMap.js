@@ -3,7 +3,7 @@ import GoogleMapReact from 'google-map-react'
 
 export default function HeatMap(props) {
     const heatMapData = {
-        positions: props.positions/*[
+        positions: props.positions.filter( function(el){return el != null})/*[
       {lat: 35.30746, lng: -80.73569},
       {lat:35.3048, lng: -80.73253},
       {lat:35.30774, lng: -80.73118}
@@ -24,9 +24,7 @@ export default function HeatMap(props) {
             heatmapLibrary={true}
             heatmap={heatMapData}
             >
-            </GoogleMapReact>
-            
-            <h4 style={{color: "#00703c" }}>{props.time}</h4>
+            </GoogleMapReact>            
         </div>
     )
 }
