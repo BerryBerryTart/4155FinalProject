@@ -16,6 +16,8 @@ cd app
 pip install -r requirements.txt
 python3 manage.py migrate
 python3 manage.py runserver
+npm i
+npm run dev #starts the webpack dev service, npm run build for production
 ```
 
 ### To Demo
