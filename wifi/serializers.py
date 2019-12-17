@@ -13,6 +13,8 @@ class TimeSliceSerializer(serializers.ModelSerializer):
         model = TimeSlice
         fields = ['id', 'datetime', 'aps']
 
+    #Custom create function to create with the nested serializers
+    #Also makes use of bulk_create to speed up import
     def create(self, validated_data):
         objs = []
         aps_data = validated_data.pop('aps')

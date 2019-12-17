@@ -36,6 +36,7 @@ class TimeSlices(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class DetailView(APIView):
+    """Detailed view of each timeslice"""
     def get_object(self, pk):
         try:
             return TimeSlice.objects.get(pk=pk)
@@ -53,12 +54,16 @@ class DetailView(APIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 class MinTimeSliceView(APIView):
+    """Primarily used to get a low overhead map of the timeslices.
+    Very useful for demo purposes.
+    """
     def get(self, request, format=None):
         slices = TimeSlice.objects.all()
         serializer = MinTimeSliceSerializer(slices, many=True)
         return Response(serializer.data)
 
 class APAverageView(APIView):
+    """Used to get or dlete specific averages"""
     def get_object(self, ap):
         try:
             return AverageByName.objects.get(name=ap)
@@ -76,6 +81,7 @@ class APAverageView(APIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 class MinAPAverageView(APIView):
+    """Used to get specific averages and get all averages at once"""
     def get(self, request, format=None):
         point = AverageByName.objects.all()
         serializer = MinAverageByNameSerializer(point, many=True)
