@@ -24,6 +24,10 @@ npm run dev #starts the webpack dev service, npm run build for production
 Unzip the files in ./dataSeeding and run the respective python files within each
 folder while the server is running to import data. This may take some time.
 
+### Preview Images
+![Home Page](demo_images/1.PNG)
+![Hotspot Averages](demo_images/2.PNG)
+
 # Backend Overview
 
 ## Data Endpoints
